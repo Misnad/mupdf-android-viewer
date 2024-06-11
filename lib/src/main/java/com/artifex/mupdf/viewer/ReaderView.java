@@ -22,9 +22,11 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Scroller;
 
+import androidx.annotation.NonNull;
+
 public class ReaderView
 		extends AdapterView<Adapter>
-		implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
+		implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
 	private Context mContext;
 	private boolean mLinksEnabled = false;
 	private boolean tapDisabled = false;
@@ -932,6 +934,46 @@ public class ReaderView
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onSingleTapConfirmed(@NonNull MotionEvent motionEvent) {
+		return false;
+	}
+
+	@Override
+	public boolean onDoubleTap(@NonNull MotionEvent e) {
+		// TODO
+		// Zoom should be done on MotionEvent.ACTION_UP.
+		// Will have to edit onTouchEvent and move this to onDoubleTapEvent.
+		float previousScale = mScale;
+
+		if (previousScale > 1f) {
+			mScale = 1f;
+		} else {
+			mScale = 1.5f;
+		}
+
+		float factor = mScale/previousScale;
+
+		View v = mChildViews.get(mCurrent);
+		if (v != null) {
+			// Work out the focus point relative to the view top left
+			int zoomFocusX = (int)e.getX() - v.getLeft();
+			int zoomFocusY = (int)e.getY() - v.getTop();
+
+			// Scroll to maintain the focus point
+			mXScroll = (int) (zoomFocusX - zoomFocusX * factor);
+			mYScroll = (int) (zoomFocusY - zoomFocusY * factor);
+
+			requestLayout();
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTapEvent(@NonNull MotionEvent e) {
+		return false;
 	}
 
 	protected void onChildSetup(int i, View v) {

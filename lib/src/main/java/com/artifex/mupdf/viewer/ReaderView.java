@@ -921,14 +921,14 @@ public class ReaderView
 				} else {
 					onTapMainDocArea();
 				}
-			} else if (e.getX() < tapPageMargin) {
-				smartMoveBackwards();
-			} else if (e.getX() > super.getWidth() - tapPageMargin) {
-				smartMoveForwards();
-			} else if (e.getY() < tapPageMargin) {
-				smartMoveBackwards();
-			} else if (e.getY() > super.getHeight() - tapPageMargin) {
-				smartMoveForwards();
+//			} else if (e.getX() < tapPageMargin) {
+//				smartMoveBackwards();
+//			} else if (e.getX() > super.getWidth() - tapPageMargin) {
+//				smartMoveForwards();
+//			} else if (e.getY() < tapPageMargin) {
+//				smartMoveBackwards();
+//			} else if (e.getY() > super.getHeight() - tapPageMargin) {
+//				smartMoveForwards();
 			} else {
 				onTapMainDocArea();
 			}
